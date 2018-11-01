@@ -1,6 +1,6 @@
 obj/linux64/Debug/src/ofApp.o: \
- /home/tuyoshi/of_ws/BoidsTrial/src/ofApp.cpp \
- /home/tuyoshi/of_ws/BoidsTrial/src/ofApp.h \
+ /home/tuyoshi/of_ws/ofxBoidSim/src/ofApp.cpp \
+ /home/tuyoshi/of_ws/ofxBoidSim/src/ofApp.h \
  /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/ofMain.h \
  /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/utils/ofConstants.h \
  /home/tuyoshi/of_v0.10.0_linux64/libs/tess2/include/tesselator.h \
@@ -524,7 +524,7 @@ obj/linux64/Debug/src/ofApp.o: \
  /home/tuyoshi/of_v0.10.0_linux64/addons/ofxGui/src/ofxColorPicker.h \
  /home/tuyoshi/of_v0.10.0_linux64/addons/ofxGui/src/ofxPanel.h
 
-/home/tuyoshi/of_ws/BoidsTrial/src/ofApp.h:
+/home/tuyoshi/of_ws/ofxBoidSim/src/ofApp.h:
 
 /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/ofMain.h:
 

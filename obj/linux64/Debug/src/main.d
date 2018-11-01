@@ -1,4 +1,4 @@
-obj/linux64/Debug/src/main.o: /home/tuyoshi/of_ws/BoidsTrial/src/main.cpp \
+obj/linux64/Debug/src/main.o: /home/tuyoshi/of_ws/ofxBoidSim/src/main.cpp \
  /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/ofMain.h \
  /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/utils/ofConstants.h \
  /home/tuyoshi/of_v0.10.0_linux64/libs/tess2/include/tesselator.h \
@@ -510,7 +510,7 @@ obj/linux64/Debug/src/main.o: /home/tuyoshi/of_ws/BoidsTrial/src/main.cpp \
  /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/3d/of3dUtils.h \
  /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/3d/ofCamera.h \
  /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/3d/ofEasyCam.h \
- /home/tuyoshi/of_ws/BoidsTrial/src/ofApp.h \
+ /home/tuyoshi/of_ws/ofxBoidSim/src/ofApp.h \
  /home/tuyoshi/of_v0.10.0_linux64/addons/ofxGui/src/ofxGui.h \
  /home/tuyoshi/of_v0.10.0_linux64/addons/ofxGui/src/ofxToggle.h \
  /home/tuyoshi/of_v0.10.0_linux64/addons/ofxGui/src/ofxBaseGui.h \
@@ -1575,7 +1575,7 @@ obj/linux64/Debug/src/main.o: /home/tuyoshi/of_ws/BoidsTrial/src/main.cpp \
 
 /home/tuyoshi/of_v0.10.0_linux64/libs/openFrameworks/3d/ofEasyCam.h:
 
-/home/tuyoshi/of_ws/BoidsTrial/src/ofApp.h:
+/home/tuyoshi/of_ws/ofxBoidSim/src/ofApp.h:
 
 /home/tuyoshi/of_v0.10.0_linux64/addons/ofxGui/src/ofxGui.h:
 
