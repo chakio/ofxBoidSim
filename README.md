@@ -2,16 +2,16 @@ ofxBoidSim
 ====
 
 ボイドモデルの描画
+![result](https://github.com/chakio/ofxBoidSim/media/boid.gif)
 ## Description
-
 
 生命の群れなどを表現する際の有名な手法の一つとして、人口生命モデル
 Boidsというモデルが提案されています。
 このBoidsモデルを用いて鳥の群れを再現してみました。
 
+
 ## Boids model
 基本的には以下の性質に基づき鳥は移動します。
-
 <dl>
     <dt>Separation</dt>
     <dd>他の鳥とぶつからない</dd>
@@ -20,3 +20,8 @@ Boidsというモデルが提案されています。
     <dt>Cohesion</dt>
     <dd>群れの中心方向に向かう</dd>
 </dl>
+
+## Originality
+* 描画の都合上ある範囲内にとどまること
+* 速度にノイズを載せ、単調な動きをを抑制すること
+* 速度に依存させて描画時の色を変化させていること
