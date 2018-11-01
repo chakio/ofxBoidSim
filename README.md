@@ -2,7 +2,7 @@ ofxBoidSim
 ====
 
 ボイドモデルの描画
-![result](https://github.com/chakio/ofxBoidSim/media/boid.gif)
+![result](https://github.com/chakio/ofxBoidSim/media/boids.gif)
 ## Description
 
 生命の群れなどを表現する際の有名な手法の一つとして、人口生命モデル
