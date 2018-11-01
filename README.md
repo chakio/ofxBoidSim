@@ -1,7 +1,7 @@
 ofxBoidSim
 ====
 
-ボイドモデルの描画
+* ボイドモデルの描画の様子  
 ![result](https://github.com/chakio/ofxBoidSim/blob/master/media/boids.gif)
 ## Description
 
