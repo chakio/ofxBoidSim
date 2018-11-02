@@ -9,6 +9,10 @@ ofxBoidSim
 Boidsというモデルが提案されています。
 このBoidsモデルを用いて鳥の群れを再現してみました。
 
+## Environment
+* Ubuntu16.04
+* openFrameworks v0.10.0
+* visualstudio code
 
 ## Boids model
 基本的には以下の性質に基づき鳥は移動します。
