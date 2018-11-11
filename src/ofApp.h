@@ -17,19 +17,17 @@ private:
 	vector<double> angles;
 	ofMesh mesh;
 	bool target;
-	bool enemy;
 	int enemyIndex;
 
 	double MAX_VEL 				= 100;
 	double MIN_VEL 				= 10;
 	double NEAR_DISTANCE		= 300;
-	int    HISTORY_SIZE			= 40;
+	int    HISTORY_SIZE			= 30;
 
-	double OBSTACLE_DISTANCE;
 	double BOUNDARY_DISTANCE;
 
 public:
-	boid(int boidSize, double boundary, double obstacle);
+	boid(int boidSize, double boundary);
 	void update(double time);
 	void draw();
 
@@ -50,11 +48,29 @@ public:
 	bool getEnemy();
 };
 
+class attractor
+{
+private:
+	double boxSize;
+	ofVec3f velocity;
+	ofVec3f position;
+	double	velSize;
+	double 	beforeTime;
+	void setVelocity();
+
+public:
+	attractor();
+	void setup(double size,double time,double velSize);
+	void update(double time);
+	void draw();
+	ofVec3f getPos();
+};
 
 class ofApp : public ofBaseApp{
 	public:
-	double VOLUME_OF_BOIDS  =500;
+	double VOLUME_OF_BOIDS  =400;
 	vector<boid> boids;
+	attractor Attractor;
 
 	int targetNum=0;
 	int enemyNum=0;
@@ -70,21 +86,21 @@ class ofApp : public ofBaseApp{
 	double COHESION_FORCE 		= 2;
 	double SEPARATION_FORCE		= 2;
 	double ALIGNMENT_FORCE		= 1.5;
-	double BOUNDARY_FORCE       = 0.0001;
+	double BOUNDARY_FORCE       = 0.00;
 	double OBSTACLE_FORCE		= 0;
-	double ENEMY_FORCE			= 15;
-	double NOISE_FORCE 			= 10;
+	double NOISE_FORCE 			= 0.4;
+	double ATTRACTOR_FORCE		= 0.1;
 
-	double COHESION_DISTANCE	= 300;
-	double SEPARATION_DISTANCE	= 100;
-	double ALIGNMENT_DISTANCE	= 200;
-	double OBSTACLE_DISTANCE	= 150;
-	double ENEMY_DISTANCE		= 200;
+	double COHESION_DISTANCE	= 500;
+	double SEPARATION_DISTANCE	= 450;
+	double ALIGNMENT_DISTANCE	= 100;
 	double BOUNDARY_DISTANCE	= 500;
 
-	double COHESION_ANGLE		= 3.14/3;
+	double COHESION_ANGLE		= 3.14/4;
 	double SEPARATION_ANGLE		= 3.14/1;
-	double ALIGNMENT_ANGLE		= 3.14/4;
+	double ALIGNMENT_ANGLE		= 3.14/5;
 
+	double BOX_SIZE				= 500;
+	double ATTRACTOR_VEL		= 300;
 
 };

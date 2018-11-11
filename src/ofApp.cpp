@@ -1,6 +1,6 @@
 #include "ofApp.h"
 //--------------------------------------------------------------
-boid::boid(int boidSize, double boundary, double obstacle)
+boid::boid(int boidSize, double boundary)
 {
 	pos.resize(1);
 	pos[0].set(ofRandom(-500,500),ofRandom(-500,500),ofRandom(-500,500));
@@ -12,10 +12,9 @@ boid::boid(int boidSize, double boundary, double obstacle)
 		distances.push_back(0);
 		angles.push_back(0);
 	}
-	mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+	mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
 
 	BOUNDARY_DISTANCE = boundary;
-	OBSTACLE_DISTANCE = obstacle;
 }
 void boid::update(double time)
 {
@@ -31,19 +30,6 @@ void boid::update(double time)
 }
 void boid::draw()
 {
-	int count=0;
-	for(int i=0;i<distances.size();i++)
-	{
-		if(NEAR_DISTANCE>distances[i])
-		{
-			count++;
-		}
-	}
-	//ofSetColor(255,255,255,count*0.5);
-	
-	//ofDrawLine(pos,pos+vel/40);
-	mesh.clear();
-
 	ofColor c,color;
 	ofVec3f velNormalize=vel.normalized();
 	//cout <<velNormalize.length()<<endl;
@@ -52,64 +38,39 @@ void boid::draw()
 	//cout<<(double)velNormalize.x<<","<<(double)velNormalize.y<<","<<(double)velNormalize.z<<endl;
 	//cout<<(double)color.r<<","<<(double)color.g<<","<<(double)color.b<<","<<sqrt(pow(color.r,2)+pow(color.g,2)+pow(color.b,2))<<endl;
 	bool inside,outside;
-	/*if(pos[pos.size()-1].length()>OBSTACLE_DISTANCE)
-	{
-		inside = false;
-	}
-	else
-	{
-		inside = true;
-	}
-	if(pos[pos.size()-1].length()<BOUNDARY_DISTANCE)
-	{
-		outside = false;
-	}
-	else
-	{
-		outside = true;
-	}*/
-	if(enemy)
-	{
-		ofSetLineWidth(10);
-	}
-	else
-	{
-		ofSetLineWidth(2);
-	}
 
-	for(int i=0;i<pos.size();i++)
+	
+	ofMesh triangle;
+	ofVec3f top,left,right,crossed;
+	crossed = vel.getRotated(90,ofVec3f(0,0,1))/30;
+	top=pos[pos.size()-1]+vel/30;
+	left=pos[pos.size()-1] +crossed;
+	right=pos[pos.size()-1] - crossed;
+	
+	mesh.addVertex(left);
+	mesh.addVertex(right);
+	mesh.addVertex(top);
+	mesh.clearColors();
+	if(mesh.getNumVertices()>pos.size()*2)
 	{
-		mesh.addVertex(pos[i]);
-		/*if(inside)
+		for(int i=0;i<2;i++)
 		{
-			c.set(0,255,255,255/(pos.size()-i));
+			mesh.removeVertex(i);
 		}
-		else if(outside)
-		{
-			c.set(255,255,0,255/(pos.size()-i));
-		}
-		else if(target)
-		{	
-			c.set(255,0,0,255/(pos.size()-i));
-		}
-		else
-		{
-			c.set(255,255,255,255/(pos.size()-i));
-		}*/
-		if(enemy)
-		{
-			c.set(255,0,0,255/(pow((double)(pos.size()-i),0.3)));
-		}
-		else
-		{
-			c.set(color.r,color.g,color.b,255/(pow((double)(pos.size()-i),1)));
-			//c.set(255,255,255,255/(pow((double)(pos.size()-i),0.7)));
-		}
+	}
+	for(int i=0;i<mesh.getNumVertices();i++)
+	{
+		c.set(color.r,color.g,color.b,255/(1+pow((double)(mesh.getNumVertices()-i)/mesh.getNumVertices()*3,2)));
 		mesh.addColor(c);
 	}
+
 	ofPushMatrix();
-	mesh.drawWireframe();
+	mesh.draw();
 	ofPopMatrix();
+
+	//頂点だけ削除しておく
+	mesh.removeVertex(mesh.getNumVertices()-1);
+
 }
 void boid::setDistances(int index,double distance)
 {
@@ -122,14 +83,6 @@ void boid::setAngles(int index,double angle)
 void boid::setTarget(bool Target)
 {
 	target = Target;
-}
-void boid::setEnemy(bool Enemy)
-{
-	enemy = Enemy;
-}
-void::boid::setEnemyIndex(int EnemyIndex)
-{
-	enemyIndex = EnemyIndex;
 }
 void boid::addVel(ofVec3f vec)
 {
@@ -167,10 +120,90 @@ int boid::getPosSize()
 {
 	return pos.size();
 }
-bool boid::getEnemy()
+
+//--------------------------------------------------------------
+attractor::attractor()
 {
-	return enemy;
+
 }
+void attractor::setup(double size,double Time, double velsize)
+{
+	boxSize 	= size;
+	beforeTime 	= 	Time;
+	position 	= ofVec3f(boxSize/2,boxSize/2,boxSize/2);
+	velSize		= velsize;
+	this->setVelocity();
+}
+void attractor::setVelocity()
+{
+	if(position.x > boxSize/2)
+	{
+		position.x = boxSize/2;
+	}
+	else if(position.x < -boxSize/2)
+	{
+		position.x = -boxSize/2;
+	}
+	if(position.y > boxSize/2)
+	{
+		position.y = boxSize/2;
+	}
+	else if(position.y < -boxSize/2)
+	{
+		position.y = -boxSize/2;
+	}
+	if(position.z > boxSize/2)
+	{
+		position.z = boxSize/2;
+	}
+	else if(position.z < -boxSize/2)
+	{
+		position.z = -boxSize/2;
+	}
+
+	int normalizePos[3] = {(int)position.x/(boxSize/2),(int)position.y/(boxSize/2),(int)position.z/(boxSize/2)};
+	int randomIndex = ofRandom(0,60)/20;
+	if(randomIndex==0)
+	{
+		velocity=ofVec3f(-normalizePos[0]*velSize,0,0);
+	}
+	else if(randomIndex==1)
+	{
+		velocity=ofVec3f(0,-normalizePos[0]*velSize,0);
+	} 
+	else if(randomIndex==2)
+	{
+		velocity=ofVec3f(0,0,-normalizePos[0]*velSize);
+	} 
+}
+void attractor::update(double Time)
+{
+	double dTime 	= 	Time-beforeTime;
+	beforeTime 		= 	Time; 
+	position		+=  dTime*velocity;
+
+	if(abs(position.x) >boxSize/2 || abs(position.y) >boxSize/2 || abs(position.z) >boxSize/2)
+	{
+		this->setVelocity();
+	}
+}
+void attractor::draw()
+{
+	ofSetLineWidth(0.5);
+	ofSetColor(0,0,255,255);
+	ofSetBoxResolution(1);
+	ofNoFill();
+	ofDrawBox(boxSize);
+	ofFill();
+	ofSetColor(255,0,0,255);
+	ofDrawSphere(position,boxSize/30);
+	//cout<<position<<endl;
+}
+ofVec3f attractor::getPos()
+{
+	return position;
+}
+
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -179,11 +212,12 @@ void ofApp::setup(){
 	ofBackground(0);
 	for(int num=0;num<VOLUME_OF_BOIDS ;num++)
 	{
-		boid Boid(VOLUME_OF_BOIDS,BOUNDARY_DISTANCE,OBSTACLE_DISTANCE);
+		boid Boid(VOLUME_OF_BOIDS,BOUNDARY_DISTANCE);
 		boids.push_back(Boid);
 	}
+	Attractor.setup(BOX_SIZE,ofGetElapsedTimef(),ATTRACTOR_VEL);
 	ofEnableAlphaBlending();
-	//ofEnableDepthTest();
+	ofEnableDepthTest();
 	
 }
 void ofApp::update(){
@@ -207,32 +241,19 @@ void ofApp::update(){
 	for(int i=0;i<boids.size();i++)
 	{
 		ofVec3f addVelocity;
-		addVelocity.set(0,0,0);
-
 		ofVec3f cohesion_velocity;
-		cohesion_velocity.set(0,0,0);
 		ofVec3f separation_velocity;
-		separation_velocity.set(0,0,0);
 		ofVec3f alignment_velocity;
-		alignment_velocity.set(0,0,0);
 		ofVec3f boundary_velocity;
-		boundary_velocity.set(0,0,0);
-		ofVec3f obstacle_velocity;
-		obstacle_velocity.set(0,0,0);
-		ofVec3f enemy_velocity;
-		enemy_velocity.set(0,0,0);
 		ofVec3f noise_velocity;
-		noise_velocity.set(0,0,0);
-
+		ofVec3f attractor_velocity;
 
 		ofVec3f average_point;
-		average_point.set(0,0,0);
 		ofVec3f average_direct;
-		average_direct.set(0,0,0);
 		ofVec3f average_vel_direct;
-		average_vel_direct.set(0,0,0);
 
-		int count=0;
+		int count = 0;
+
 
 		//COHESION
 		for(int j=0;j<boids.size();j++)
@@ -278,23 +299,16 @@ void ofApp::update(){
 			boundary_velocity = - BOUNDARY_FORCE*boids[i].getPos(0).normalize()*(boids[i].getPos(0).length()-BOUNDARY_DISTANCE);
 		}
 
+		//ATTRACTOR
+		attractor_velocity = - ATTRACTOR_FORCE*(boids[i].getPos(0)-Attractor.getPos()).normalize()*(boids[i].getPos(0)-Attractor.getPos()).length();
+
 		//NOISE
-		noise_velocity.set(0.5-ofNoise(i,0,ofGetElapsedTimef()*10),0.5-ofNoise(i,1,ofGetElapsedTimef()*10),0.5-ofNoise(i,2,ofGetElapsedTimef()*10));
+		noise_velocity.set(0.5-ofNoise(i,0,ofGetElapsedTimef()*1),0.5-ofNoise(i,1,ofGetElapsedTimef()*1),0.5-ofNoise(i,2,ofGetElapsedTimef()*1));
 		noise_velocity *= NOISE_FORCE;
+
 		//SUMMARY
+		addVelocity = cohesion_velocity+separation_velocity+alignment_velocity+boundary_velocity+noise_velocity+attractor_velocity;
 
-		addVelocity = cohesion_velocity+separation_velocity+alignment_velocity+boundary_velocity+obstacle_velocity+noise_velocity + enemy_velocity ;
-		//OBSTACLE
-		if(boids[i].getPos(0).length()<OBSTACLE_DISTANCE)
-		{
-			obstacle_velocity =  OBSTACLE_FORCE*boids[i].getPos(0).normalize()*(OBSTACLE_DISTANCE-boids[i].getPos(0).length());
-		}
-
-		//ENEMY
-		if(boids[i].getDistance(enemyNum)<ENEMY_DISTANCE && !boids[i].getEnemy())
-		{
-			enemy_velocity =  ENEMY_FORCE*(boids[i].getPos(0)-boids[enemyNum].getPos(0)).normalize()*(ENEMY_DISTANCE-(boids[enemyNum].getPos(0)-boids[i].getPos(0).length()));
-		}
 		boids[i].addVel(addVelocity);
 
 	}
@@ -302,11 +316,9 @@ void ofApp::update(){
 	{
 		boids[i].update(ofGetElapsedTimef());
 		boids[i].setTarget(false);
-		boids[i].setEnemy(false);
-		boids[i].setEnemyIndex(enemyNum);
 	}
 	boids[targetNum].setTarget(true);
-	boids[enemyNum].setEnemy(true);
+	Attractor.update(ofGetElapsedTimef());
 }
 void ofApp::draw(){
 	
@@ -314,11 +326,7 @@ void ofApp::draw(){
 	
 	cam.begin();
 	ofDrawAxis(100);
-	ofSetLineWidth(0.5);
-	ofSetColor(0,0,255,255);
-	ofSetSphereResolution(10);
-	ofFill();
-	//ofDrawSphere(0,0,OBSTACLE_DISTANCE*0.8);
+	
 	for(int i=0;i<boids.size()-1;i++)
 	{
 		boids[i].draw();
@@ -333,10 +341,10 @@ void ofApp::draw(){
 			}
 		}*/
 	}
-	
+	Attractor.draw();
 	cam.end();
-	//cam.setTarget(boids[targetNum].getPos(0));
-	//cam.setPosition(boids[targetNum].getPos(boids[targetNum].getPosSize()-1));
+	cam.setTarget(boids[targetNum].getPos(0));
+	cam.setPosition(boids[targetNum].getPos(boids[targetNum].getPosSize()-1));
 }
 void ofApp::mousePressed(int x, int y, int button)
 {

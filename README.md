@@ -1,7 +1,9 @@
 ofxBoidSim
 ====
 
-* ボイドモデルの描画の様子  
+* ボイドモデルの描画の様子 
+リボン状にしてみました。
+![result](https://github.com/chakio/ofxBoidSim/blob/master/media/rebbon.gif) 
 ![result](https://github.com/chakio/ofxBoidSim/blob/master/media/boids.gif)
 ## Description
 
