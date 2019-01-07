@@ -7,12 +7,15 @@ ofxBoidSim
 ![result](https://github.com/chakio/ofxBoidSim/blob/master/media/rebbon.gif) 
 ![result](https://github.com/chakio/ofxBoidSim/blob/master/media/boids.gif)
 ## Description
+生命の群れなどを表現する際の有名な手法の一つとして、人口生命モデルBoidsというモデルが提案されています。  
+Boidsモデルは映画のCGのアルゴリズムの元にもなっている、基本的で強力なアルゴリズムです。  
+このBoidsモデルを用いて鳥の群れを再現してみました。  
+また、以下の工夫を取り入れています。  
+* 描画の都合上ある範囲内にとどまること
+* 速度にノイズを載せ、単調な動きをを抑制すること
+* 速度に依存させて描画時の色を変化させていること
 
-生命の群れなどを表現する際の有名な手法の一つとして、人口生命モデル
-Boidsというモデルが提案されています。
-このBoidsモデルを用いて鳥の群れを再現してみました。
-
-## Environment
+## Requirement
 * Ubuntu16.04
 * openFrameworks v0.10.0
 * visualstudio code
@@ -28,7 +31,8 @@ Boidsというモデルが提案されています。
     <dd>群れの中心方向に向かう</dd>
 </dl>
 
-## Originality
-* 描画の都合上ある範囲内にとどまること
-* 速度にノイズを載せ、単調な動きをを抑制すること
-* 速度に依存させて描画時の色を変化させていること
+## Lisence
+[MIT](https://github.com/chakio/ofxBoidSim/blob/master/LICENSE)
+
+## Author
+[chakio](https://github.com/chakio)

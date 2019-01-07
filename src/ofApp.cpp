@@ -321,8 +321,8 @@ void ofApp::update(){
 	Attractor.update(ofGetElapsedTimef());
 }
 void ofApp::draw(){
-	
-	//cam.setDistance(300.0f);  
+	cam.setTarget(boids[targetNum].getPos(0));
+	cam.setDistance(100.0f);  
 	
 	cam.begin();
 	ofDrawAxis(100);
@@ -343,8 +343,8 @@ void ofApp::draw(){
 	}
 	Attractor.draw();
 	cam.end();
-	cam.setTarget(boids[targetNum].getPos(0));
-	cam.setPosition(boids[targetNum].getPos(boids[targetNum].getPosSize()-1));
+	
+	//cam.setPosition(boids[targetNum].getPos(boids[targetNum].getPosSize()-1));
 }
 void ofApp::mousePressed(int x, int y, int button)
 {
